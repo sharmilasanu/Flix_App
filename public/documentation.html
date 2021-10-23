@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang=en>
   <meta charset="utf-8">
-   <body>
-     <h1> Essential Features</h1>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <body style = "margin-left: 250px; margin-right : 250px">
+       <h1>My Flix API</h1>
+       <p> My flix API has the following essential fetaures</p>
+      <h3> Essential Features</h3>
     <ul>
         <li>  Return a list of ALL movies to the user
         </li>
@@ -19,19 +22,66 @@
         </li>
         <li>Allow existing users to deregister
         </li>
-        <h3>Supported Browsers</h3>
-        <ul>
-            <li>Chrome</li>
-            <li>Firefox</li>
-            <li>Edge</li>
-        </ul>
-        <h3>Tools/Technologies used</h3>
-        <ul>
-            <li>Html</li>
-            <li>Css</li>
-            <li>Javascript</li>
-            <li>Node.js</li>
-        </ul>
-    </ul>
+       </ul>
+       <h3> Resource URL</h3>
+       <a href="https://www.w3schools.com/">Visit W3Schools.com!</a>
+     
+    <table class= "table table-striped">
+        <thead>
+          <tr>
+            <th>Request</th>
+            <th>URL</th>
+            <th>Responses</th>
+          </tr>
+        </thead>
+    
+        <tbody>
+          <tr>
+            <td>GET</td>
+            <td>/movies</td>
+            <td>Return a list of ALL movies.</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/movies/:title</td>
+            <td>Return data about a single movie by title.</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/movies/:genre</td>
+            <td>Return data by genre.</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/director/:name</td>
+            <td>Return data about a director by name.</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/users</td>
+            <td>Allow new users to register.</td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/users/:id/:user_info</td>
+            <td>Allow user to update the user info</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/users/:id/:favorites</td>
+            <td>Allow user to add a movie to the list of favorites.</td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>/users/:id/:favorites</td>
+            <td>All user to remove a movie from the list of favorites.</td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>/users/:id</td>
+            <td>Allow existing user to deregister.</td>
+          </tr>
+        </tbody>
+      </table>
    </body>
 </html>
