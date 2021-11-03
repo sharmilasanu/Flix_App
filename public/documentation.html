@@ -2,7 +2,7 @@
 <html lang=en>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   <body style = "margin-left: 250px; margin-right : 250px">
+   <body style = "margin-left: 250px; margin-right : 250px; margin-top: 100x">
        <h1>My Flix API</h1>
        <p> My flix API has the following essential fetaures</p>
       <h3> Essential Features</h3>
@@ -24,13 +24,14 @@
         </li>
        </ul>
        <h3> Resource URL</h3>
-       <a href="https://www.w3schools.com/">Visit W3Schools.com!</a>
+       <a href="https://github.com/sharmilasanu/Flix_App">https://github.com/sharmilasanu/Flix_App</a>
      
     <table class= "table table-striped">
         <thead>
           <tr>
             <th>Request</th>
             <th>URL</th>
+            <th>Request Body</th>
             <th>Responses</th>
           </tr>
         </thead>
@@ -39,46 +40,70 @@
           <tr>
             <td>GET</td>
             <td>/movies</td>
+            <td> --- </td>
             <td>Return a list of ALL movies.</td>
           </tr>
           <tr>
             <td>GET</td>
-            <td>/movies/:title</td>
+            <td>/movies/:Title</td>
+            <td>---</td>
             <td>Return data about a single movie by title.</td>
           </tr>
           <tr>
             <td>GET</td>
-            <td>/movies/:genre</td>
+            <td>/genre/:Name</td>
+            <td>---</td>
             <td>Return data by genre.</td>
           </tr>
           <tr>
             <td>GET</td>
-            <td>/director/:name</td>
+            <td>/movies/director/:Name</td>
+            <td>---</td>
             <td>Return data about a director by name.</td>
           </tr>
           <tr>
             <td>POST</td>
             <td>/users</td>
+            <td> 
+               {
+              "UserName" : "gokul",
+              "Password" : "mads",
+              "Email" : "ad"
+          }</td>
             <td>Allow new users to register.</td>
           </tr>
           <tr>
+            <td>GET</td>
+            <td>/users/:UserName</td>
+            <td> ---</td>
+            <td>Allow To find a specific user.</td>
+          </tr>
+          <tr>
             <td>PUT</td>
-            <td>/users/:id/:user_info</td>
+            <td>/users/:UserName</td>
+            <td> Enter the details that needed to be updated
+              {
+              "UserName" : "Nihaarica123",
+              "Email" : "asdasd"
+          }</td>
             <td>Allow user to update the user info</td>
           </tr>
           <tr>
             <td>POST</td>
-            <td>/users/:id/:favorites</td>
+            <td>/users/:UserName/movies/:MovieID</td>
+            <td> ---</td>
             <td>Allow user to add a movie to the list of favorites.</td>
           </tr>
           <tr>
             <td>DELETE</td>
-            <td>/users/:id/:favorites</td>
+            <td>/users/:UserName/movies/:MovieID</td>
+            <td> ---</td>
             <td>All user to remove a movie from the list of favorites.</td>
           </tr>
           <tr>
             <td>DELETE</td>
-            <td>/users/:id</td>
+            <td>/users/:UserName</td>
+            <td> ---</td>
             <td>Allow existing user to deregister.</td>
           </tr>
         </tbody>
