@@ -1,78 +1,84 @@
-const express = require('express'),
-morgan = require('morgan')
-     let moviesList = [
-        {
-          title: 'Harry Potter and the Sorcerer\'s Stone',
-          
-          description : 'Harry Potter is a series of seven fantasy novels written by British author J. K. Rowling',
-          genre : 'Fantasy Fiction',
-          imageUrl : '',
-          director: {
-            name :'J.K. Rowling',
-            bio : '',
-            birth_year : 1978,
-            death_year : 1994
-          }
-        },
-        {
-          title: 'Lord of the Rings',
-         
-          description : 'Lord of the Rings is a series of three epic fantasy adventure films',
-          genre : 'Fantasy Fiction',
-          imageUrl : '',
-          director: {
-            name :'Peter Jackson',
-            bio : '',
-            birth_year : 1978,
-            death_year : 1994
-          }
-        },
-        {
-          title: 'Twilight',
-          description : 'The Twilight Saga is a series of five vampire-themed romance fantasy films',
-          genre : 'Fantasy Fiction',
-          imageUrl : '',
-          director: {
-            name :'Stephanie Meyer',
-            bio : '',
-            birth_year : 1978,
-            death_year : 1994
-          }
-        },
-        {
-          title: 'Frozen',
-          description : 'Frozen is a 2013 American computer-animated musical fantasy film',
-          genre : 'Fantasy',
-          imageUrl : '',
-          director: {
-            name :'Adam Green',
-            bio : '',
-            birth_year : 1978,
-            death_year : 1994
-          }
-        },
-        {
-          title: 'Oceans eleven',
-          description : 'Oceans Eleven is a 2001 American heist comedy film',
-          genre : 'Heist',
-          imageUrl : '',
-          director: {
-            name :'Jerry Weintraubn',
-            bio : '',
-            birth_year : 1978,
-            death_year : 2001
-        }
-      }
-      ];
-      let userList = [
-        {
-        name : 'dfa',
-        password : 'ad',
-        dob : 1994,
-        email  : 'sdf@gmail.com'
-        }
-      ]
+const bodyParser = require('body-parser'),
+express = require('express'),
+
+morgan = require('morgan'),
+mongoose = require('mongoose')
+Models = require('./models.js')
+
+
+//importing the models from Models.js
+const Movies = Models.Movie;
+const Users = Models.User;
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+let moviesList = [
+  {
+    title: 'Harry Potter and the Sorcerer\'s Stone',
+    
+    description : 'Harry Potter is a series of seven fantasy novels written by British author J. K. Rowling',
+    genre : 'Fantasy Fiction',
+    imageUrl : '',
+    director: {
+      name :'J.K. Rowling',
+      bio : '',
+      birth_year : 1978,
+      death_year : 1994
+    }
+  },
+  {
+    title: 'Lord of the Rings',
+   
+    description : 'Lord of the Rings is a series of three epic fantasy adventure films',
+    genre : 'Fantasy Fiction',
+    imageUrl : '',
+    director: {
+      name :'Peter Jackson',
+      bio : '',
+      birth_year : 1978,
+      death_year : 1994
+    }
+  },
+  {
+    title: 'Twilight',
+    description : 'The Twilight Saga is a series of five vampire-themed romance fantasy films',
+    genre : 'Fantasy Fiction',
+    imageUrl : '',
+    director: {
+      name :'Stephanie Meyer',
+      bio : '',
+      birth_year : 1978,
+      death_year : 1994
+    }
+  },
+  {
+    title: 'Frozen',
+    description : 'Frozen is a 2013 American computer-animated musical fantasy film',
+    genre : 'Fantasy',
+    imageUrl : '',
+    director: {
+      name :'Adam Green',
+      bio : '',
+      birth_year : 1978,
+      death_year : 1994
+    }
+  },
+  {
+    title: 'Oceans eleven',
+    description : 'Oceans Eleven is a 2001 American heist comedy film',
+    genre : 'Heist',
+    imageUrl : '',
+    director: {
+      name :'Jerry Weintraubn',
+      bio : '',
+      birth_year : 1978,
+      death_year : 2001
+  }
+}
+];
+
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'))
 app.use(morgan('common'))
 
@@ -84,42 +90,176 @@ app.get('/documentation', (req, res) => {
 });
 // Gets list of movies
 app.get('/movies', (req,res) => {
-    res.json(moviesList)
+  Movies.find()
+  .then((movies) => {
+    res.status(201).json(movies);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 })
 // Gets data of movie by name/title
-app.get('/movies/:title', (req, res) => {
-  res.json(moviesList.find((movie) =>
-    { return movie.title === req.params.title }));
+app.get('/movies/:Title', (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+  .then((movie) => {
+    res.json(movie);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });
 
 //gets genre of the movie by using movie name/title
-app.get('/movies/:genre', (req, res) => {
-  res.send('Successful get returning the genre according to the movie title');
+app.get('/genre/:Name', (req, res) => {
+  Movies.findOne({ 'Genre.Name' : req.params.Name})
+  .then((genre) => {
+    res.json(genre);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });
 
 // gets data about director 
-app.get('/movies/director/:name', (req, res) => {
-  res.send('Successful get returning the data about the director');
+app.get('/movies/director/:Name', (req, res) => {
+  Movies.findOne({ 'Director.Name' : req.params.Name})
+  .then((director) => {
+    res.json(director);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
+});
+
+//finds all the users
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+//finds users by username
+
+app.get('/users/:UserName', (req, res) => {
+  Users.findOne({ UserName: req.params.UserName })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 // Adds a new users
 app.post('/users', (req, res) => {
-  res.send('Successful post request adding a new user');
-});
-//adds a favorite movie
-app.post('/users/:id/favoritres', (req, res) => {
-  res.send('Successful post request adding a favorite movie on the user list');
-});
-//deletes the favorite movies
-app.delete('/users/:id/favoritres', (req, res) => {
-  res.send('Successful delete request removing a favorite movie from the user list');
+  //  res.send('Successful post request adding a new user');
+  Users.findOne({ UserName: req.body.UserName })
+  .then((user) => {
+    if (user) {
+      return res.status(400).send(req.body.UserName + 'already exists');
+    } else {
+      Users
+        .create({
+          UserName: req.body.UserName,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        })
+        .then((user) =>{res.status(201).json(user) })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      })
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  });
 });
 
-app.put('/users/:id/user_info', (req, res) => {
-  res.send('Successful put request updating the user information');
+//updates user info
+app.put('/users/:UserName', (req, res) => {
+  Users.findOneAndUpdate(
+    {UserName: req.params.UserName}, 
+    {
+    $set: {
+      UserName: req.body.UserName,
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    },
+  },
+  { new: true },
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
 });
-app.delete('/users/:id', (req, res) => {
-  res.send('Successful delete request deleting the user account');
+
+
+//adds a favorite movie
+app.post('/users/:UserName/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate({UserName: req.params.UserName}, 
+    {
+      $push: {FavoriteMovies: req.params.MovieID}
+    },
+    {new: true},
+    (err, updatedUser) => {
+      console.log (updatedUser)
+      if(err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+
+});
+//deletes the favorite movies
+app.delete('/users/:UserName/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate({UserName: req.params.UserName}, {
+    $pull: {FavoriteMovies: req.params.MovieID}
+  },
+  {new: true},
+  (err, updatedUser) => {
+    if(err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
+});
+
+//DELETES EXIXITONG USER
+
+app.delete('/users/:UserName', (req, res) => {
+  Users.findOneAndRemove({ UserName: req.params.UserName})
+  .then((user) => {
+    if(!user) {
+      res.status(400).send(req.params.UserName + ' was not found.');
+    } else {
+      res.status(200).send(req.params.UserName + ' was deleted.');
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });
 
 
