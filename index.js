@@ -79,6 +79,9 @@ let moviesList = [
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 app.use(express.static('public'))
 app.use(morgan('common'))
 
@@ -89,7 +92,7 @@ app.get('/documentation', (req, res) => {
   res.sendFile('public/documentation.html', { root: __dirname });
 });
 // Gets list of movies
-app.get('/movies', (req,res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }),(req,res) => {
   Movies.find()
   .then((movies) => {
     res.status(201).json(movies);
