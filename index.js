@@ -79,9 +79,10 @@ let moviesList = [
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
+app.use(passport.initialize());
+let auth = require('./auth')(app);
 app.use(express.static('public'))
 app.use(morgan('common'))
 
