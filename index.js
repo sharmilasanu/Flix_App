@@ -9,6 +9,7 @@ Models = require('./models.js')
 //importing the models from Models.js
 const Movies = Models.Movie;
 const Users = Models.User;
+const { check, validationResult } = require('express-validator');
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect('process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -84,7 +85,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const passport = require('passport');
 require('./passport');
 app.use(passport.initialize());
-const { check, validationResult } = require('express-validator');
+
 check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric()
 const cors = require('cors');
 // will allow only certain regions to access this api
