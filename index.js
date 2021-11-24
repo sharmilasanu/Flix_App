@@ -86,7 +86,6 @@ const passport = require('passport');
 require('./passport');
 app.use(passport.initialize());
 
-check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric()
 const cors = require('cors');
 // will allow only certain regions to access this api
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
@@ -190,8 +189,8 @@ app.post('/users',
   //or use .isLength({min: 5}) which means
   //minimum value of 5 characters are only allowed
   [
-    check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('UserName', 'Username is required').isLength({min: 5}),
+    check('UserName', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
   ], (req, res) => {
