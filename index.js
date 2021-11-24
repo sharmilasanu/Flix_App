@@ -9,7 +9,9 @@ Models = require('./models.js')
 //importing the models from Models.js
 const Movies = Models.Movie;
 const Users = Models.User;
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifiedTopology: true })
+
 
 let moviesList = [
   {
@@ -181,7 +183,7 @@ app.get('/users/:UserName', (req, res) => {
 
 // Adds a new users
 app.post('/users',
-  // Validation logic here for request
+  // Validation logic here for request 
   //you can either use a chain of methods like .not().isEmpty()
   //which means "opposite of isEmpty" in plain english "is not empty"
   //or use .isLength({min: 5}) which means
