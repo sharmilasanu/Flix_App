@@ -202,7 +202,7 @@ app.post('/users',
       return res.status(422).json({ errors: errors.array() });
     }
   let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.UserName }) // Search to see if a user with the requested username already exists
+  Users.findOne({ UserName: req.body.UserName }) // Search to see if a user with the requested username already exists
     .then((user) => {
       if (user) {
       //If the user is found, send a response that it already exists
