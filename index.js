@@ -6,8 +6,6 @@ mongoose = require('mongoose')
 Models = require('./models.js')
 
 
-
-
 //importing the models from Models.js
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -17,70 +15,6 @@ mongoose.connect('process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifi
 
 
 
-let moviesList = [
-  {
-    title: 'Harry Potter and the Sorcerer\'s Stone',
-    
-    description : 'Harry Potter is a series of seven fantasy novels written by British author J. K. Rowling',
-    genre : 'Fantasy Fiction',
-    imageUrl : '',
-    director: {
-      name :'J.K. Rowling',
-      bio : '',
-      birth_year : 1978,
-      death_year : 1994
-    }
-  },
-  {
-    title: 'Lord of the Rings',
-   
-    description : 'Lord of the Rings is a series of three epic fantasy adventure films',
-    genre : 'Fantasy Fiction',
-    imageUrl : '',
-    director: {
-      name :'Peter Jackson',
-      bio : '',
-      birth_year : 1978,
-      death_year : 1994
-    }
-  },
-  {
-    title: 'Twilight',
-    description : 'The Twilight Saga is a series of five vampire-themed romance fantasy films',
-    genre : 'Fantasy Fiction',
-    imageUrl : '',
-    director: {
-      name :'Stephanie Meyer',
-      bio : '',
-      birth_year : 1978,
-      death_year : 1994
-    }
-  },
-  {
-    title: 'Frozen',
-    description : 'Frozen is a 2013 American computer-animated musical fantasy film',
-    genre : 'Fantasy',
-    imageUrl : '',
-    director: {
-      name :'Adam Green',
-      bio : '',
-      birth_year : 1978,
-      death_year : 1994
-    }
-  },
-  {
-    title: 'Oceans eleven',
-    description : 'Oceans Eleven is a 2001 American heist comedy film',
-    genre : 'Heist',
-    imageUrl : '',
-    director: {
-      name :'Jerry Weintraubn',
-      bio : '',
-      birth_year : 1978,
-      death_year : 2001
-  }
-}
-];
 
 const app = express();
 app.use(bodyParser.json());
@@ -91,7 +25,7 @@ app.use(passport.initialize());
 
 const cors = require('cors');
 // will allow only certain regions to access this api
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'https://sharmismyflix.herokuapp.com/','http://localhost:1234'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -114,7 +48,21 @@ app.get('/documentation', (req, res) => {
   res.sendFile('public/documentation.html', { root: __dirname });
 });
 // Gets list of movies
-app.get('/movies', passport.authenticate('jwt', { session: false }),(req,res) => {
+//temporary for react ex 3.4
+app.get("/movies", function (req, res) {
+  Movies.find()
+    .then(function (movies) {
+      res.status(201).json(movies);
+    })
+    .catch(function (error) {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
+});
+
+//actual with authentication
+
+/*app.get('/movies', passport.authenticate('jwt', { session: false }),(req,res) => {
   Movies.find()
   .then((movies) => {
     res.status(201).json(movies);
@@ -123,7 +71,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),(req,res) =>
     console.error(err);
     res.status(500).send('Error: ' + err);
   });
-})
+})*/
 // Gets data of movie by name/title
 app.get('/movies/:Title', (req, res) => {
   Movies.findOne({ Title: req.params.Title })
@@ -205,7 +153,7 @@ app.post('/users',
       return res.status(422).json({ errors: errors.array() });
     }
   let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.UserName }) // Search to see if a user with the requested username already exists
+  Users.findOne({ UserName: req.body.UserName }) // Search to see if a user with the requested username already exists
     .then((user) => {
       if (user) {
       //If the user is found, send a response that it already exists
@@ -314,8 +262,8 @@ app.use((err, req, res, next) => {
   });
 
 
+
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
 });
-  
