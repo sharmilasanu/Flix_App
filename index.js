@@ -6,12 +6,15 @@ mongoose = require('mongoose')
 Models = require('./models.js')
 
 
+
+
 //importing the models from Models.js
 const Movies = Models.Movie;
 const Users = Models.User;
 const { check, validationResult } = require('express-validator');
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect('process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifiedTopology: true })
+
 
 
 let moviesList = [
@@ -206,7 +209,7 @@ app.post('/users',
     .then((user) => {
       if (user) {
       //If the user is found, send a response that it already exists
-        return res.status(400).send(req.body.Username + ' already exists');
+        return res.status(400).send(req.body.UserName + ' already exists');
       } else {
         Users
           .create({
