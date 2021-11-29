@@ -162,7 +162,7 @@ app.post('/users',
       } else {*/
         Users.create({
             UserName: req.body.UserName,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
