@@ -141,7 +141,7 @@ app.post('/users',
   //or use .isLength({min: 5}) which means
   //minimum value of 5 characters are only allowed
   [
-    check('UserName', 'Username is required').isLength({min: 5}),
+    check('UserName', 'Username length should be from 5').isLength({min: 5}),
     check('UserName', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
@@ -156,10 +156,10 @@ app.post('/users',
   let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ UserName: req.body.UserName }) // Search to see if a user with the requested username already exists
     .then((user) => {
-      if (user) {
+     /* if (user) {
       //If the user is found, send a response that it already exists
         return res.status(400).send(req.body.UserName + ' already exists');
-      } else {
+      } else {*/
         Users
           .create({
             UserName: req.body.UserName,
@@ -172,7 +172,7 @@ app.post('/users',
             console.error(error);
             res.status(500).send('Error: ' + error);
           });
-      }
+      
     })
     .catch((error) => {
       console.error(error);
