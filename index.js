@@ -49,7 +49,7 @@ app.get('/documentation', (req, res) => {
 });
 // Gets list of movies
 //temporary for react ex 3.4
-app.get('/movies', function (req, res) {
+app.get('/movies', (req, res) => {
   Movies.find()
     .then(function (movies) {
       res.status(201).json(movies);
