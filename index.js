@@ -49,7 +49,7 @@ app.get('/documentation', (req, res) => {
   res.sendFile('public/documentation.html', { root: __dirname });
 });
 // Gets list of movies
-//temporary for react ex 3.4
+/*temporary for react ex 3.4
 app.get('/movies', (req, res) => {
   Movies.find()
     .then(function (movies) {
@@ -59,10 +59,10 @@ app.get('/movies', (req, res) => {
       console.error(error);
       res.status(500).send("Error: " + error);
     });
-});
+});*/
 //actual with authentication
 
-/*app.get('/movies', passport.authenticate('jwt', { session: false }),(req,res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }),(req,res) => {
   Movies.find()
   .then((movies) => {
     res.status(201).json(movies);
@@ -71,7 +71,7 @@ app.get('/movies', (req, res) => {
     console.error(err);
     res.status(500).send('Error: ' + err);
   });
-})*/
+})
 // Gets data of movie by name/title
 app.get('/movies/:Title', (req, res) => {
   Movies.findOne({ Title: req.params.Title })
