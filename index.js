@@ -62,6 +62,14 @@ app.get('/movies', (req, res) => {
 });*/
 //actual with authentication
 
+
+/**
+ * Get all movies
+ * @method GET
+ * @param {string} endpoint - endpoint to fetch all the movies - "url/movies"
+ * @returns {object} - returns all the movies
+ * @requires authentication JWT
+ */
 app.get('/movies', passport.authenticate('jwt', { session: false }),(req,res) => {
   Movies.find()
   .then((movies) => {
@@ -72,7 +80,14 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),(req,res) =>
     res.status(500).send('Error: ' + err);
   });
 })
-// Gets data of movie by name/title
+/**
+ * Get a movie by title
+ * @method GET
+ * @param {string} endpoint - endpoint to fetch a movie by title
+ * @param {string} Title - is used to get a specific movie - "url/movies/:Title"
+ * @returns {object} - returns the specific movie 
+ * @requires authentication JWT
+ */
 app.get('/movies/:Title', (req, res) => {
   Movies.findOne({ Title: req.params.Title })
   .then((movie) => {
@@ -84,7 +99,14 @@ app.get('/movies/:Title', (req, res) => {
   });
 });
 
-//gets genre of the movie by using movie name/title
+/**
+ * Get a genre by it's name
+ * @method GET
+ * @param {string} endpoint - endpoint to fetch a genre by it's name
+ * @param {string} Name - is used to get a specific genre - "url/genres/:Name"
+ * @returns {object} - returns the specific genre
+ * @requires authentication JWT
+ */
 app.get('/genre/:Name', (req, res) => {
   Movies.findOne({ 'Genre.Name' : req.params.Name})
   .then((genre) => {
@@ -96,7 +118,14 @@ app.get('/genre/:Name', (req, res) => {
   });
 });
 
-// gets data about director 
+/**
+ * Get a director by name
+ * @method GET
+ * @param {string} endpoint - endpoint to fetch a director by name
+ * @param {string} Name - is used to get a specific director - "url/directors/:Name"
+ * @returns {object} - returns the specific director
+ * @requires authentication JWT
+ */
 app.get('/movies/director/:Name', (req, res) => {
   Movies.findOne({ 'Director.Name' : req.params.Name})
   .then((director) => {
@@ -108,7 +137,13 @@ app.get('/movies/director/:Name', (req, res) => {
   });
 });
 
-//finds all the users
+/**
+ * Get all users
+ * @method GET
+ * @param {string} endpoint - endpoint to fetch all users - "url/users"
+ * @returns {object} - returns all the users
+ * @requires authentication JWT
+ */
 app.get('/users', (req, res) => {
   Users.find()
     .then((users) => {
@@ -119,7 +154,15 @@ app.get('/users', (req, res) => {
       res.status(500).send('Error: ' + err);
     });
 });
-//finds users by username
+
+/**
+ * Get user by username
+ * @method GET
+ * @param {string} endpoint - endpoint to fetch user by username
+ * @param {string} UserName - is used to get a specific user - "url/users/:Username"
+ * @returns {object} - returns the specific user
+ * @requires authentication JWT
+ */
 
 app.get('/users/:UserName', (req, res) => {
   Users.findOne({ UserName: req.params.UserName })
@@ -132,7 +175,16 @@ app.get('/users/:UserName', (req, res) => {
     });
 });
 
-// Adds a new users
+/**
+ * Create a new user
+ * @method POST
+ * @param {string} endpoint - endpoint to create a new user - "url/users"
+ * @param {string} UserName - username choosen by user
+ * @param {string} Password - password choosen by user
+ * @param {string} Email - email choosen by user
+ * @param {string} Birthday - birthday choosen by user
+ * @returns {object} - returns the new created user
+ */
 app.post('/users',
   // Validation logic here for request 
   //you can either use a chain of methods like .not().isEmpty()
@@ -179,7 +231,17 @@ app.post('/users',
     });
 });
 
-//updates user info
+/**
+ * Update user by username
+ * @method PUT
+ * @param {string} endpoint - endpoint to update a user - "url/users/:Username"
+ * @param {string} UserName - user's new username or same if left empty
+ * @param {string} Password - user's new password or same if left empty
+ * @param {string} Email - user's new email or same if left empty
+ * @param {string} Birthday - user's new birthday or same if left empty
+ * @returns {object} - returns the new updated user
+ * @requires authentication JWT
+ */
 app.put('/users/:UserName', (req, res) => {
   Users.findOneAndUpdate(
     {UserName: req.params.UserName}, 
@@ -203,7 +265,14 @@ app.put('/users/:UserName', (req, res) => {
 });
 
 
-//adds a favorite movie
+/**
+ * Add movie to favorites
+ * @method POST
+ * @param {string} endpoint - endpoint to add movies to favorites - "url/users/:Username/movies/MovieID"
+ * @param {string} UserName - is used to find a specific user
+ * @param {string} MovieID - is used to add a movie's id to the user's favorites 
+ * @returns {string} - returns success or error message
+ */
 app.post('/users/:UserName/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({UserName: req.params.UserName}, 
     {
@@ -221,7 +290,14 @@ app.post('/users/:UserName/movies/:MovieID', (req, res) => {
     });
 
 });
-//deletes the favorite movies
+/**
+ * Delete movie from favorites
+ * @method DELETE
+ * @param {string} endpoint - endpoint to add movies to favorites - "url/users/:Username/movies/MovieID"
+ * @param {string} UserName - is used to find a specific user
+ * @param {string} MovieID - is used to add a movie's id to the user's favorites 
+ * @returns {string} - returns success or error message
+ */
 app.delete('/users/:UserName/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({UserName: req.params.UserName}, {
     $pull: {FavoriteMovies: req.params.MovieID}
@@ -237,7 +313,14 @@ app.delete('/users/:UserName/movies/:MovieID', (req, res) => {
   });
 });
 
-//DELETES EXIXITONG USER
+/**
+ * Delete user by username
+ * @method DELETE
+ * @param {string} endpoint - endpoint to delete a user
+ * @param {string} UserName - is used to delete a specific user - "url/users/:Username"
+ * @returns {string} success or error message
+ * @requires authentication JWT
+ */
 
 app.delete('/users/:UserName', (req, res) => {
   Users.findOneAndRemove({ UserName: req.params.UserName})
