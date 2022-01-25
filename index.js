@@ -26,7 +26,7 @@ app.use(passport.initialize());
 
 const cors = require('cors');
 // will allow only certain regions to access this api
-let allowedOrigins = ['http://localhost:8080', 'https://sharmismyflix.herokuapp.com','http://localhost:1234','http://localhost:4200','https://sharmilasanu.github.io'];
+let allowedOrigins = ['http://localhost:8080', 'https://sharmismyflix.herokuapp.com','http://localhost:1234','http://localhost:4200','https://sharmilasanu.github.io' , 'https://sharmismyflix.netlify.app/'];
 
 app.use(cors({
   origin: (origin, callback) => {
